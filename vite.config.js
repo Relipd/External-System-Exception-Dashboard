@@ -10,6 +10,9 @@ export default defineConfig({
       theme: "@semi-bot/semi-theme-feishu-dashboard",
     }),
   ],
+  optimizeDeps: {
+    exclude: ['@lark-base-open/js-sdk'],
+  },
   server: {
     host: "0.0.0.0",
   },
