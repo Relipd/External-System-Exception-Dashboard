@@ -1,0 +1,49 @@
+$font-display: 'JetBrains Mono', monospace;
+
+.stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 18px 16px 14px;
+  text-align: center;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  &-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+    filter: grayscale(0.1);
+  }
+
+  &-value {
+    font-family: $font-display;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--accent, #4a7dd7);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  &-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    letter-spacing: 0.04em;
+  }
+
+  // subtle bottom accent line
+  &-bar {
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--accent, #4a7dd7);
+    opacity: 0.2;
+  }
+}
