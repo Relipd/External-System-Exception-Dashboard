@@ -33,16 +33,22 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [baseToken, setBaseToken] = useState('');
 
   const switchBase = useCallback(async (token: string) => {
-    const instance = await workspace.getBitable(token);
-    if (!instance) return false;
-    setApp({
-      dashboard: instance.dashboard,
-      base: instance.base,
-      bridge: instance.bridge,
-      ui: instance.ui,
-    });
-    setBaseToken(token);
-    return true;
+    if (!token) return false;
+    try {
+      const instance = await workspace.getBitable(token);
+      if (!instance) return false;
+      setApp({
+        dashboard: instance.dashboard,
+        base: instance.base,
+        bridge: instance.bridge,
+        ui: instance.ui,
+      });
+      setBaseToken(token);
+      return true;
+    } catch (e) {
+      console.warn('switchBase failed:', e);
+      return false;
+    }
   }, []);
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { dashboard as defaultDashboard, bitable, DashboardState } from '@lark-base-open/js-sdk';
+import { dashboard as defaultDashboard, DashboardState } from '@lark-base-open/js-sdk';
 import { useTheme } from './hooks';
 import { useWorkspace } from './workspace';
 import classnames from 'classnames';
@@ -100,7 +100,7 @@ export default function App() {
       const fieldOrder: string[] = [];
       let platformIdx = -1, riskLevelIdx = -1, statusIdx = -1, createdAtIdx = -1;
 
-      const activeBase = workspaceBase || bitable.base;
+      const activeBase = workspaceBase;
       const isActive = typeof activeBase?.getTable === 'function';
 
       if (isActive) {
