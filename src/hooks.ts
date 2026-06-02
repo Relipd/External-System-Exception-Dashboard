@@ -1,48 +1,45 @@
-import { DashboardState, dashboard } from '@lark-base-open/js-sdk';
 import { useLayoutEffect, useState, useEffect } from 'react';
+import { useWorkspace, DashboardState } from './workspace';
 
 function updateTheme(theme: string) {
   document.body.setAttribute('theme-mode', theme);
 }
 
-/** 跟随飞书主题色变化 */
 export function useTheme() {
+  const { dashboard } = useWorkspace();
   const [bgColor, setBgColor] = useState('#f4f6f9');
 
   useLayoutEffect(() => {
-    if (typeof dashboard?.getTheme !== 'function') return;
+    if (!dashboard || typeof dashboard.getTheme !== 'function') return;
 
-    dashboard.getTheme().then((res) => {
+    dashboard.getTheme().then((res: any) => {
       setBgColor(res.chartBgColor);
       updateTheme(res.theme.toLocaleLowerCase());
     }).catch(() => {});
 
-    dashboard.onThemeChange((res) => {
+    dashboard.onThemeChange((res: any) => {
       setBgColor(res.data.chartBgColor);
       updateTheme(res.data.theme.toLocaleLowerCase());
     });
-  }, []);
+  }, [dashboard]);
 
   return { bgColor };
 }
 
-/** 初始化、更新 config */
 export function useConfig(updateConfig: (data: any) => void) {
+  const { dashboard } = useWorkspace();
   const isCreate = dashboard?.state === DashboardState.Create;
 
   useEffect(() => {
-    if (isCreate) return;
-    if (typeof dashboard?.getConfig !== 'function') return;
+    if (isCreate || !dashboard?.getConfig) return;
     dashboard.getConfig().then(updateConfig).catch(() => {});
-  }, []);
+  }, [dashboard, isCreate, updateConfig]);
 
   useEffect(() => {
-    if (typeof dashboard?.onConfigChange !== 'function') return;
-    const offConfigChange = dashboard.onConfigChange((r) => {
-      updateConfig(r.data);
-    });
-    return () => { offConfigChange(); };
-  }, []);
+    if (!dashboard?.onConfigChange) return;
+    const off = dashboard.onConfigChange((r: any) => updateConfig(r.data));
+    return () => off();
+  }, [dashboard, updateConfig]);
 }
 
-export { dashboard, DashboardState };
+export { DashboardState };
