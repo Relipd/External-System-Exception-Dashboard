@@ -1,0 +1,3 @@
+.vite
+*.local
+node_modules/
